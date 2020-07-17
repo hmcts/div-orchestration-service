@@ -100,7 +100,7 @@ case:
   maintenance:
     service:
       api:
-        baseurl: ${CASE_MAINTENANCE_SERVICE_API_BASEURL:http://localhost:4010}
+        baseurl: ${CASE_MAINTENANCE_SERVICE_API_BASEURL:http://div-cms-aat.service.core-compute-aat.internal}
   event:
     awaiting-da-period: ${AWAITING_DA_PERIOD:43d} # supports different time units e.g. 'm'(i.e. minute),'s'(i.e. second)
     da-overdue-period: ${DA_OVERDUE_PERIOD:1y}
