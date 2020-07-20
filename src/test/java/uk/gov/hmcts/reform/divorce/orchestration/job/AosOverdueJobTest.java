@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.quartz.JobExecutionException;
-import uk.gov.hmcts.reform.divorce.orchestration.service.CaseOrchestrationService;
+import uk.gov.hmcts.reform.divorce.orchestration.service.AosService;
 import uk.gov.hmcts.reform.divorce.orchestration.service.CaseOrchestrationServiceException;
 import uk.gov.hmcts.reform.divorce.orchestration.util.AuthUtil;
 
@@ -27,7 +27,7 @@ public class AosOverdueJobTest {
     public ExpectedException expectedException = none();
 
     @Mock
-    private CaseOrchestrationService caseOrchestrationService;
+    private AosService aosService;
 
     @Mock
     private AuthUtil authUtil;
@@ -44,12 +44,12 @@ public class AosOverdueJobTest {
     public void shouldCallService() throws CaseOrchestrationServiceException, JobExecutionException {
         classUnderTest.execute(null);
 
-        verify(caseOrchestrationService).markCasesToBeMovedToAosOverdue(AUTH_TOKEN);
+        verify(aosService).markCasesToBeMovedToAosOverdue(AUTH_TOKEN);
     }
 
     @Test
     public void shouldThrowJobExecutionException_WhenServiceFails() throws CaseOrchestrationServiceException, JobExecutionException {
-        doThrow(CaseOrchestrationServiceException.class).when(caseOrchestrationService).markCasesToBeMovedToAosOverdue(AUTH_TOKEN);
+        doThrow(CaseOrchestrationServiceException.class).when(aosService).markCasesToBeMovedToAosOverdue(AUTH_TOKEN);
         expectedException.expect(JobExecutionException.class);
         expectedException.expectCause(instanceOf(CaseOrchestrationServiceException.class));
 
