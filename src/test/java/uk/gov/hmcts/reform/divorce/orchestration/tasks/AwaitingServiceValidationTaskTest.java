@@ -17,20 +17,20 @@ import static uk.gov.hmcts.reform.divorce.orchestration.TestConstants.SOL_SERVIC
 import static uk.gov.hmcts.reform.divorce.orchestration.domain.model.OrchestrationConstants.CASE_STATE_JSON_KEY;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceMethodValidationTaskTest {
+public class AwaitingServiceValidationTaskTest {
 
     private DefaultTaskContext taskContext;
-    private ServiceMethodValidationTask serviceMethodValidationTask;
+    private AwaitingServiceValidationTask awaitingServiceValidationTask;
 
     @Before
     public void setup() {
-        serviceMethodValidationTask = new ServiceMethodValidationTask();
+        awaitingServiceValidationTask = new AwaitingServiceValidationTask();
         taskContext = new DefaultTaskContext();
     }
 
-    @Test
-    public void testExecuteValidatesServiceMethodDoesntThrowExceptionIfServiceMethodIsNotPresent() throws TaskException {
-        serviceMethodValidationTask.execute(taskContext, Collections.emptyMap());
+    @Test(expected = TaskException.class)
+    public void testExecuteValidatesServiceMethodThrowsExceptionIfServiceMethodIsNotPresent() throws TaskException {
+        awaitingServiceValidationTask.execute(taskContext, Collections.emptyMap());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ServiceMethodValidationTaskTest {
         Map<String, Object> payload = Collections.singletonMap(
                 SOL_SERVICE_METHOD_CCD_FIELD, "test"
         );
-        Map<String, Object> execute = serviceMethodValidationTask.execute(taskContext, payload);
+        Map<String, Object> execute = awaitingServiceValidationTask.execute(taskContext, payload);
         assertThat(execute, is(payload));
     }
 
@@ -48,7 +48,7 @@ public class ServiceMethodValidationTaskTest {
         Map<String, Object> payload = Collections.singletonMap(
                 SOL_SERVICE_METHOD_CCD_FIELD, PERSONAL_SERVICE_VALUE
         );
-        serviceMethodValidationTask.execute(taskContext, payload);
+        awaitingServiceValidationTask.execute(taskContext, payload);
     }
 
     @Test(expected = TaskException.class)
@@ -57,6 +57,6 @@ public class ServiceMethodValidationTaskTest {
         Map<String, Object> payload = Collections.singletonMap(
                 SOL_SERVICE_METHOD_CCD_FIELD, PERSONAL_SERVICE_VALUE
         );
-        serviceMethodValidationTask.execute(taskContext, payload);
+        awaitingServiceValidationTask.execute(taskContext, payload);
     }
 }
