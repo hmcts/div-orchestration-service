@@ -78,8 +78,6 @@ public class SolicitorCallbackController {
         @RequestBody @ApiParam("CaseData") CcdCallbackRequest ccdCallbackRequest) {
 
         Map<String, Object> response;
-        log.info("TEST");
-
         try {
             response = solicitorService.solicitorConfirmPersonalService(ccdCallbackRequest);
         } catch (Exception e) {
