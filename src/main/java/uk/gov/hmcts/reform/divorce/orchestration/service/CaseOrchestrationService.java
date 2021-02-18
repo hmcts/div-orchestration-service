@@ -178,5 +178,7 @@ public interface CaseOrchestrationService {
 
     CcdCallbackResponse welshSetPreviousState(CcdCallbackRequest ccdCallbackRequest) throws WorkflowException;
 
+    Map<String, Object> migrateChequePayment(CcdCallbackRequest ccdCallbackRequest) throws WorkflowException;
+
     Map<String, Object> judgeCostsDecision(CcdCallbackRequest ccdCallbackRequest);
 }
