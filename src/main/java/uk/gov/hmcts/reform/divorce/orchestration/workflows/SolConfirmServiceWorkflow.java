@@ -9,11 +9,8 @@ import uk.gov.hmcts.reform.divorce.orchestration.domain.model.ccd.CcdCallbackReq
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.DefaultWorkflow;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.WorkflowException;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.task.Task;
-import uk.gov.hmcts.reform.divorce.orchestration.tasks.AwaitingServiceValidationTask;
 import uk.gov.hmcts.reform.divorce.orchestration.tasks.PersonalServiceValidationTask;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.reform.divorce.orchestration.domain.model.OrchestrationConstants.CASE_ID_JSON_KEY;
@@ -24,18 +21,13 @@ import static uk.gov.hmcts.reform.divorce.orchestration.domain.model.Orchestrati
 @Slf4j
 public class SolConfirmServiceWorkflow extends DefaultWorkflow<Map<String, Object>> {
 
-    private final AwaitingServiceValidationTask awaitingServiceValidationTask;
     private final PersonalServiceValidationTask personalServiceValidationTask;
 
     public Map<String, Object> run(final CcdCallbackRequest ccdCallbackRequest) throws WorkflowException {
         final CaseDetails caseDetails = ccdCallbackRequest.getCaseDetails();
 
-        final List<Task> tasks = new ArrayList<>();
-
-        tasks.add(awaitingServiceValidationTask);
-        tasks.add(personalServiceValidationTask);
-
-        return this.execute(tasks.toArray(new Task[0]),
+        return this.execute(
+            new Task[]{personalServiceValidationTask},
             caseDetails.getCaseData(),
             ImmutablePair.of(CASE_ID_JSON_KEY, caseDetails.getCaseId()),
             ImmutablePair.of(CASE_STATE_JSON_KEY, caseDetails.getState())

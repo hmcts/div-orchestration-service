@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.divorce.orchestration.workflows;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -13,7 +12,6 @@ import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.WorkflowExce
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.task.DefaultTaskContext;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.task.TaskContext;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.task.TaskException;
-import uk.gov.hmcts.reform.divorce.orchestration.tasks.AwaitingServiceValidationTask;
 import uk.gov.hmcts.reform.divorce.orchestration.tasks.PersonalServiceValidationTask;
 
 import java.util.HashMap;
@@ -21,7 +19,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.divorce.orchestration.TestConstants.TEST_CASE_ID;
 import static uk.gov.hmcts.reform.divorce.orchestration.TestConstants.TEST_EVENT_ID;
@@ -32,9 +30,6 @@ import static uk.gov.hmcts.reform.divorce.orchestration.domain.model.Orchestrati
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolConfirmServiceWorkflowTest {
-
-    @Mock
-    private AwaitingServiceValidationTask awaitingServiceValidationTask;
 
     @Mock
     private PersonalServiceValidationTask personalServiceValidationTask;
@@ -72,35 +67,22 @@ public class SolConfirmServiceWorkflowTest {
 
     @Test
     public void whenWorkflowRunsForAdulteryCase_WithNamedCoRespondent_allTasksRun_payloadReturned() throws WorkflowException, TaskException {
-        when(awaitingServiceValidationTask.execute(context, payload)).thenReturn(payload);
         when(personalServiceValidationTask.execute(context, payload)).thenReturn(payload);
 
         Map<String, Object> response = solConfirmServiceWorkflow.run(ccdCallbackRequestRequest);
         assertThat(response, is(payload));
 
-        final InOrder inOrder = inOrder(
-            awaitingServiceValidationTask,
-            personalServiceValidationTask
-        );
-
-        inOrder.verify(awaitingServiceValidationTask).execute(context, payload);
-        inOrder.verify(personalServiceValidationTask).execute(context, payload);
+        verify(personalServiceValidationTask).execute(context, payload);
     }
 
     @Test
     public void whenWorkflowRunsForNonAdulteryCase_allTasksRunExceptForCoRespondent_payloadReturned() throws WorkflowException, TaskException {
-        when(awaitingServiceValidationTask.execute(context, payload)).thenReturn(payload);
         when(personalServiceValidationTask.execute(context, payload)).thenReturn(payload);
 
         Map<String, Object> response = solConfirmServiceWorkflow.run(ccdCallbackRequestRequest);
         assertThat(response, is(payload));
 
-        final InOrder inOrder = inOrder(
-            awaitingServiceValidationTask,
-            personalServiceValidationTask
-        );
-        inOrder.verify(awaitingServiceValidationTask).execute(context, payload);
-        inOrder.verify(personalServiceValidationTask).execute(context, payload);
+        verify(personalServiceValidationTask).execute(context, payload);
     }
 
 }
