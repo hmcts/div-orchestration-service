@@ -123,6 +123,10 @@
     "A",
     "C"
   ],
+  "D8JurisdictionConnectionNewPolicy": [
+    "A",
+    "C"
+  ],
   "D8JurisdictionLastTwelveMonths": null,
   "D8JurisdictionPetitionerDomicile": null,
   "D8JurisdictionPetitionerResidence": "YES",
@@ -216,5 +220,6 @@
   "D8InferredPetitionerGender": "female",
   "D8InferredRespondentGender": "male",
   "D8PetitionerConsent": "YES",
-  "RespondentContactDetailsConfidential": "share"
+  "RespondentContactDetailsConfidential": "share",
+  "NewLegalConnectionPolicy": "Yes"
 }

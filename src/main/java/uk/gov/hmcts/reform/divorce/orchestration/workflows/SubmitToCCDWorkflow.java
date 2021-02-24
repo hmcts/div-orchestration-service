@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.divorce.orchestration.domain.model.courts.Court;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.DefaultWorkflow;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.WorkflowException;
 import uk.gov.hmcts.reform.divorce.orchestration.framework.workflow.task.Task;
+import uk.gov.hmcts.reform.divorce.orchestration.tasks.CopyJurisdictionConnectionPolicyTask;
 import uk.gov.hmcts.reform.divorce.orchestration.tasks.CourtAllocationTask;
 import uk.gov.hmcts.reform.divorce.orchestration.tasks.DeleteDraftTask;
 import uk.gov.hmcts.reform.divorce.orchestration.tasks.DuplicateCaseValidationTask;
@@ -38,6 +39,9 @@ public class SubmitToCCDWorkflow extends DefaultWorkflow<Map<String, Object>> {
     private FormatDivorceSessionToCaseDataTask formatDivorceSessionToCaseDataTask;
 
     @Autowired
+    private CopyJurisdictionConnectionPolicyTask copyJurisdictionConnectionPolicyTask;
+
+    @Autowired
     private ValidateCaseDataTask validateCaseDataTask;
 
     @Autowired
@@ -51,6 +55,7 @@ public class SubmitToCCDWorkflow extends DefaultWorkflow<Map<String, Object>> {
             new Task[]{
                 duplicateCaseValidationTask,
                 courtAllocationTask,
+                copyJurisdictionConnectionPolicyTask,
                 formatDivorceSessionToCaseDataTask,
                 validateCaseDataTask,
                 submitCaseToCCD,
